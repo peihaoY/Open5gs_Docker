@@ -75,6 +75,10 @@ iptables-legacy -t nat -A POSTROUTING -s 10.45.0.0/16 -o eth0 -j MASQUERADE
 ```
 To use this container with srsgnb, the `addr` option under `amf` section in gnb configuration must be set OPEN5GS_IP (here: 10.53.1.2).
 It could also be required to modify `bind_addr` option under `amf` section in gnb configuration to the local ethernet/wifi IP address for the host or container where gnb is running, not a localhost IP.
+```
+sudo docker start open5gs
+sudo docker stop open5gs
+```
 
 ```
 amf: 10.53.1.2
