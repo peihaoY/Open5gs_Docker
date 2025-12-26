@@ -1,33 +1,9 @@
-This is a all-in-one Docker container for Open5GS. At build, the container will use the specified version of the open5gs repository (default v2.6.6
-). To run the latest tag of the open5gs repository (<https://github.com/open5gs/open5gs/tags>), line 51 and 52 in .Dockerfile
-```
-# get latest open5gs tag (must be stored in a file, because docker does not allow to use the return value directly)
-# RUN git ls-remote --tags https://github.com/open5gs/open5gs | sort -t '/' -k 3 -V | awk -F/ '{ print $3 }' | awk '!/\^\{\}/' | tail -n 1 > ./open5gsversion
-```
-must be uncommented.
-
-```
-cd srsRAN_Project/docker/open5gs
-sudo docker exec -it inspiring_mendeleev /bin/bash
-iptables -t nat -L -n -v
-sysctl -w net.ipv4.ip_forward=1
-iptables-legacy -t nat -A POSTROUTING -s 10.45.0.0/16 -o eth0 -j MASQUERADE
-```
-
-
-
-```
-amf: 10.53.1.2
-blind: 10.53.0.1
-```
-
 # Container Parameters
 
 In [open5gs.env](open5gs.env) the following parameters can be set:
 
 - MONGODB_IP (default: 127.0.0.1): This is the IP of the mongodb to use. 127.0.0.1 is the mongodb that runs inside this container.
-- SUBSCRIBER_DB (default: "001010123456780,00112233445566778899aabbccddeeff,opc,63bfa50ee6523365ff14c1f45f88737d,8000,10.45.1.2"): This adds subscriber data for a single or multiple users to the Open5GS mongodb. It contains either:
-  - Comma separated string with information to define a subscriber
+- SUBSCRIBER_DB 
   - `subscriber_db.csv`. This is a csv file that contains entries to add to open5gs mongodb. Each entry will represent a subscriber. It must be stored in `docker/open5gs/`
 - OPEN5GS_IP: This must be set to the IP of the container (here: 10.53.1.2).
 - UE_IP_BASE: Defines the IP base used for connected UEs (here: 10.45.0).
@@ -70,14 +46,28 @@ Build the Docker container using:
 
 You can overwrite open5gs version by adding `--build-arg OPEN5GS_VERSION=v2.6.6`
 
+```
+cd srsRAN_Project/docker/open5gs
+sudo docker exec -it inspiring_mendeleev /bin/bash
+iptables -t nat -L -n -v
+sysctl -w net.ipv4.ip_forward=1
+iptables-legacy -t nat -A POSTROUTING -s 10.45.0.0/16 -o eth0 -j MASQUERADE
+```
+
 Then run the docker container with:
 
 `cd srsRAN_Project/docker/open5gs
 sudo docker run   --net open5gsnet   --ip 10.53.1.2   --env-file open5gs.env   --privileged   --publish 9999:9999   -v $(pwd)/db.csv:/db.csv   open5gs-docker   ./build/tests/app/5gc -c open5gs-5gc.yml`
 
 
+
 To use this container with srsgnb, the `addr` option under `amf` section in gnb configuration must be set OPEN5GS_IP (here: 10.53.1.2).
 It could also be required to modify `bind_addr` option under `amf` section in gnb configuration to the local ethernet/wifi IP address for the host or container where gnb is running, not a localhost IP.
+
+```
+amf: 10.53.1.2
+blind: 10.53.0.1
+```
 
 To ping a connected UE setup the necessary route to the UE_IP_BASE + ".0/24" (here: 10.45.0) via the OPEN5GS_IP (here: 10.53.1.2) using:
 
