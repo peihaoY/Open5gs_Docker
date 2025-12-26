@@ -6,6 +6,20 @@ This is a all-in-one Docker container for Open5GS. At build, the container will 
 ```
 must be uncommented.
 
+```
+cd srsRAN_Project/docker/open5gs
+sudo docker exec -it inspiring_mendeleev /bin/bash
+iptables -t nat -L -n -v
+sysctl -w net.ipv4.ip_forward=1
+iptables-legacy -t nat -A POSTROUTING -s 10.45.0.0/16 -o eth0 -j MASQUERADE
+```
+
+
+
+```
+amf: 10.53.1.2
+blind: 10.53.0.1
+```
 
 # Container Parameters
 
