@@ -2,12 +2,7 @@
 
 In [open5gs.env](open5gs.env) the following parameters can be set:
 
-- MONGODB_IP (default: 127.0.0.1): This is the IP of the mongodb to use. 127.0.0.1 is the mongodb that runs inside this container.
-- SUBSCRIBER_DB 
-  - `subscriber_db.csv`. This is a csv file that contains entries to add to open5gs mongodb. Each entry will represent a subscriber. It must be stored in `docker/open5gs/`
-- OPEN5GS_IP: This must be set to the IP of the container (here: 10.53.1.2).
-- UE_IP_BASE: Defines the IP base used for connected UEs (here: 10.45.0).
-- DEBUG (default: false): This can be set to true to run Open5GS in debug mode.
+SUBSCRIBER_DB=/db.csv
 
 ```
 # Kept in the following format: "Name,IMSI,Key,OP_Type,OP/OPc,AMF,QCI,IP_alloc"
@@ -33,6 +28,14 @@ ue03,001010000000008,fec86ba6eb707ed08905757b1bb44b8f,opc,C42449363BBAD02B66D16B
 # Open5GS Parameters
 
 Open5GS can be setup using [open5gs-5gc.yml](open5gs-5gc.yml).
+
+```
+  dns:
+    - 35.9.37.103
+    - 35.9.37.241
+    - 2001:4860:4860::8888
+    - 2001:4860:4860::8844
+```
 
 # Usage
 
