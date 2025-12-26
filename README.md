@@ -59,7 +59,8 @@ iptables-legacy -t nat -A POSTROUTING -s 10.45.0.0/16 -o eth0 -j MASQUERADE
 
 Then run the docker container with:
 
-```cd srsRAN_Project/docker/open5gs
+```
+cd srsRAN_Project/docker/open5gs
 sudo docker run -d \
   --name open5gs \
   --net open5gsnet \
@@ -69,7 +70,8 @@ sudo docker run -d \
   --publish 9999:9999 \
   -v $(pwd)/db.csv:/db.csv \
   open5gs-docker \
-  ./build/tests/app/5gc -c open5gs-5gc.yml```
+  ./build/tests/app/5gc -c open5gs-5gc.yml
+```
 
 
 
