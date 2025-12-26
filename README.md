@@ -47,15 +47,7 @@ Build the Docker container using:
 
 `docker build --target open5gs -t open5gs-docker .`
 
-You can overwrite open5gs version by adding `--build-arg OPEN5GS_VERSION=v2.6.6`
-
-```
-cd srsRAN_Project/docker/open5gs
-sudo docker exec -it open5gs /bin/bash
-iptables -t nat -L -n -v
-sysctl -w net.ipv4.ip_forward=1
-iptables-legacy -t nat -A POSTROUTING -s 10.45.0.0/16 -o eth0 -j MASQUERADE
-```
+You can overwrite open5gs version by adding `--build-arg OPEN5GS_VERSION=v2.7.6`
 
 Then run the docker container with:
 
@@ -73,8 +65,14 @@ sudo docker run -d \
   ./build/tests/app/5gc -c open5gs-5gc.yml
 ```
 
-
-
+Internet Access
+```
+cd srsRAN_Project/docker/open5gs
+sudo docker exec -it open5gs /bin/bash
+iptables -t nat -L -n -v
+sysctl -w net.ipv4.ip_forward=1
+iptables-legacy -t nat -A POSTROUTING -s 10.45.0.0/16 -o eth0 -j MASQUERADE
+```
 To use this container with srsgnb, the `addr` option under `amf` section in gnb configuration must be set OPEN5GS_IP (here: 10.53.1.2).
 It could also be required to modify `bind_addr` option under `amf` section in gnb configuration to the local ethernet/wifi IP address for the host or container where gnb is running, not a localhost IP.
 
