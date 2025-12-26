@@ -51,7 +51,7 @@ You can overwrite open5gs version by adding `--build-arg OPEN5GS_VERSION=v2.6.6`
 
 ```
 cd srsRAN_Project/docker/open5gs
-sudo docker exec -it inspiring_mendeleev /bin/bash
+sudo docker exec -it open5gs /bin/bash
 iptables -t nat -L -n -v
 sysctl -w net.ipv4.ip_forward=1
 iptables-legacy -t nat -A POSTROUTING -s 10.45.0.0/16 -o eth0 -j MASQUERADE
