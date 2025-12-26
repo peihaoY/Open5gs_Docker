@@ -49,9 +49,9 @@ In [open5gs.env](open5gs.env) the following parameters can be set:
 #
 # Note: Lines starting by '#' are ignored and will be overwritten
 # List of UEs with IMSI, and key increasing by one for each new UE. Useful for testing with AmariUE simulator and ue_count option
-ue01,001010123456789,00112233445566778899aabbccddeeff,opc,63bfa50ee6523365ff14c1f45f88737d,9001,9,10.45.1.2
-ue02,001010123456790,00112233445566778899aabbccddef00,opc,63bfa50ee6523365ff14c1f45f88737d,9001,9,10.45.2.2
-ue03,001010123456791,00112233445566778899aabbccddef01,opc,63bfa50ee6523365ff14c1f45f88737d,9001,9,10.45.3.2
+ue01,001010000000001,fec86ba6eb707ed08905757b1bb44b8f,opc,C42449363BBAD02B66D16BC975D77CC1,9001,9,10.45.1.2
+ue02,001010000000011,fec86ba6eb707ed08905757b1bb44b8f,opc,C42449363BBAD02B66D16BC975D77CC1,9001,9,10.45.2.2
+ue03,001010000000008,fec86ba6eb707ed08905757b1bb44b8f,opc,C42449363BBAD02B66D16BC975D77CC1,9001,9,10.45.3.2
 ```
 
 # Open5GS Parameters
@@ -62,7 +62,7 @@ Open5GS can be setup using [open5gs-5gc.yml](open5gs-5gc.yml).
 
 Create a Docker network to assign a specified IP to the Open5GS conainer (here: 10.53.1.2):
 
-`docker network create --subnet=10.53.1.0/16 open5gsnet`
+`docker network create --subnet=10.53.0.0/16 open5gsnet`
 
 Build the Docker container using:
 
@@ -72,7 +72,9 @@ You can overwrite open5gs version by adding `--build-arg OPEN5GS_VERSION=v2.6.6`
 
 Then run the docker container with:
 
-`docker run --net open5gsnet --ip 10.53.1.2 --env-file open5gs.env --privileged --publish 9999:9999 open5gs-docker ./build/tests/app/5gc -c open5gs-5gc.yml`
+`cd srsRAN_Project/docker/open5gs
+sudo docker run   --net open5gsnet   --ip 10.53.1.2   --env-file open5gs.env   --privileged   --publish 9999:9999   -v $(pwd)/db.csv:/db.csv   open5gs-docker   ./build/tests/app/5gc -c open5gs-5gc.yml`
+
 
 To use this container with srsgnb, the `addr` option under `amf` section in gnb configuration must be set OPEN5GS_IP (here: 10.53.1.2).
 It could also be required to modify `bind_addr` option under `amf` section in gnb configuration to the local ethernet/wifi IP address for the host or container where gnb is running, not a localhost IP.
