@@ -1,3 +1,11 @@
+# How to RUN
+```
+sudo docker start open5gs
+sudo docker exec -it open5gs /bin/bash
+iptables-legacy -t nat -A POSTROUTING -s 10.45.0.0/16 -o eth0 -j MASQUERADE
+sudo docker stop open5gs
+```
+
 # Container Parameters
 
 In [open5gs.env](open5gs.env) the following parameters can be set:
