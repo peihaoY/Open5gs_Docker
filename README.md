@@ -3,6 +3,9 @@
 sudo docker start open5gs
 sudo docker exec -it open5gs /bin/bash
 iptables-legacy -t nat -A POSTROUTING -s 10.45.0.0/16 -o eth0 -j MASQUERADE
+```
+
+```
 sudo docker stop open5gs
 ```
 
